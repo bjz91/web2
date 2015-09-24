@@ -240,6 +240,7 @@ $.getJSON('pie.json', function(piedata) {
 				name : '本省其他城市贡献',
 				type : 'bar',
 				stack : '总量',
+				barCategoryGap : '50%',
 				itemStyle : {
 					normal : {
 						barBorderRadius : 0,
@@ -254,6 +255,7 @@ $.getJSON('pie.json', function(piedata) {
 				name : '外省贡献',
 				type : 'bar',
 				stack : '总量',
+				barCategoryGap : '50%',
 				itemStyle : {
 					normal : {
 						barBorderRadius : 0,
