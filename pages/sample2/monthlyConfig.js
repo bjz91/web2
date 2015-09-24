@@ -25,6 +25,26 @@ function initComponent() {
 }
 
 function loadComponent(bardata, piedata, piedata2) {
+
+	//准备Bar数据
+
+	var barSeries = [];
+	for (var i = 0; i < bardata.bar.data.sector.length; i++) {
+		var obj = {
+			name : bardata.bar.data.sector[i],
+			type : 'bar',
+			stack : '总量', //默认堆积方式
+			barCategoryGap : '60%',
+			itemStyle : {
+				normal : {
+					barBorderRadius : 0
+				}
+			},
+			data : bardata.bar.data.value[i]
+		};
+		barSeries.push(obj);
+	}
+
 	// 路径配置
 	require.config({
 		paths : {
@@ -44,10 +64,13 @@ function loadComponent(bardata, piedata, piedata2) {
 				//subtext : '数据来源：毕鉴昭'
 			},
 			tooltip : {
-				trigger : 'item'
+				trigger : 'axis',
+				axisPointer : {// 坐标轴指示器，坐标轴触发有效
+					type : 'shadow' // 默认为直线，可选为：'line' | 'shadow'
+				}
 			},
 			legend : {
-				data : bardata.bar.feature
+				data : bardata.bar.data.sector
 			},
 			toolbox : {
 				show : true,
@@ -86,28 +109,7 @@ function loadComponent(bardata, piedata, piedata2) {
 				type : 'value',
 				name : bardata.bar.unit
 			}],
-			series : [{
-				name : bardata.bar.feature[0],
-				type : 'bar',
-				barCategoryGap : '50%',
-				itemStyle : {
-					normal : {
-						label : {
-							show : true,
-							formatter : function(params) {
-								return params.value.toFixed(2);
-							}
-						}
-					}
-				},
-				data : function() {
-					var list = [];
-					for (var i = 0; i < bardata.bar.data.value.length; i++) {
-						list.push(bardata.bar.data.value[i]);
-					}
-					return list;
-				}()
-			}]
+			series : barSeries
 		};
 
 		// 为echarts对象加载数据
@@ -131,11 +133,11 @@ function loadComponent(bardata, piedata, piedata2) {
 				x : 'left',
 				data : function() {
 					var list = [];
-					for (var i = 0; i < piedata.pie.subspecies[0].name.length; i++) {
-						list.push(piedata.pie.subspecies[0].name[i]);
-					}
 					for (var i = 0; i < piedata2.pie.subspecies[0].name.length; i++) {
 						list.push(piedata2.pie.subspecies[0].name[i]);
+					}
+					for (var i = 0; i < piedata.pie.subspecies[0].name.length; i++) {
+						list.push(piedata.pie.subspecies[0].name[i]);
 					}
 					return list;
 				}()
