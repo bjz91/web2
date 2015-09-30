@@ -1,5 +1,9 @@
 $.getJSON('bar.json', function(bardata) {
 	$.getJSON('pie.json', function(piedata) {
+
+		//自定义颜色列表
+		var colorList = ['#2ec7c9', '#b6a2de', '#5ab1ef', '#ffb980', '#d87a80', '#8d98b3', '#e5cf0d', '#97b552', '#95706d', '#dc69aa', '#07a2a4', '#9a7fd1', '#588dd5', '#f5994e', '#c05050'];
+
 		// 路径配置
 		require.config({
 			paths : {
@@ -71,7 +75,9 @@ $.getJSON('bar.json', function(bardata) {
 					barCategoryGap : '60%',
 					itemStyle : {
 						normal : {
-							barBorderRadius : 0
+							barBorderRadius : 0,
+							color : colorList[0]
+
 						}
 					},
 					data : bardata.bar.data[0].value
@@ -121,6 +127,14 @@ $.getJSON('bar.json', function(bardata) {
 					type : 'pie',
 					radius : '55%',
 					center : ['50%', '50%'],
+					itemStyle : {
+						normal : {
+							color : function(params) {
+								// build a color map as your need.
+								return colorList[params.dataIndex]
+							},
+						}
+					},
 					data : function() {
 						var list = [];
 						for (var i = 0; i < piedata.pie.name.length; i++) {
@@ -146,6 +160,8 @@ $.getJSON('bar.json', function(bardata) {
 					var newOptionBar = myChartBar.getOption();
 					newOptionBar.series[0].data = bardata.bar.data[param.dataIndex].value;
 					newOptionBar.title.text = bardata.bar.data[param.dataIndex].title;
+					//改变bar颜色
+					newOptionBar.series[0].itemStyle.normal.color = colorList[param.dataIndex]; 
 					myChartBar.setOption(newOptionBar, true);
 					console.log(param);
 				}
