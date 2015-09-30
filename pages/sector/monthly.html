@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<head>
+	<meta charset="utf-8">
+	<title>ECharts</title>
+	<script src="../../src/jquery-2.1.4.min.js" type="text/javascript"></script>
+	<!-- ECharts单文件引入 -->
+	<script src="../../src/echarts-2.2.4/build/dist/echarts.js"></script>
+	<script src="monthlyConfig.js"></script>
+</head>
+<body>
+	<h2 align="center">排放源贡献</h2>
+	<div align="center">
+		<div id="container" style="width:60%;height:500px;float:left"></div>
+		<div id="selectdiv" style="margin:10px" align="center">
+			<form id="selectform">
+				<select id="sel" name="sel" onchange="initComponent()">
+					<option value="0">行业</option>
+					<option value="1">燃料</option>
+				</select>
+			</form>
+		</div>
+		<div id="container1" style="width:40%;height:500px;float:left"></div>
+	</div>
+	<script>
+		initComponent();
+	</script>
+</body>

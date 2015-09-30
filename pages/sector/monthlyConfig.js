@@ -1,23 +1,19 @@
 function initComponent() {
-	/*--------- 选择文件 ---------*/
-	var objYear = document.getElementById('year');
-	var yearIndex = objYear.selectedIndex;
-	var year = objYear.options[yearIndex].text;
-	var barFileName = 'data/' + year + 'bar.json';
-	var pieFileName = 'data/' + year + 'pie.json';
-	var pieFileName2 = 'data/' + year + 'pie2.json';
+
+	var barName = 'data/bar.json';
+	var pieName1 = 'data/pie.json';
+	var state = document.getElementById('sel').value;
+	var pieName2;
+	if (state == 0) {
+		pieName2 = 'data/pie2.json';
+	} else {
+		pieName2 = 'data/pie3.json';
+	}
 
 	/*--------- 加载ECharts ---------*/
-	//getJSON异常处理
-	$.ajaxSetup({
-		error : function(x, e) {
-			alert("暂无" + year + "年" + "数据");
-			return false;
-		}
-	});
-	$.getJSON(barFileName, function(bardata) {
-		$.getJSON(pieFileName, function(piedata) {
-			$.getJSON(pieFileName2, function(piedata2) {
+	$.getJSON(barName, function(bardata) {
+		$.getJSON(pieName1, function(piedata) {
+			$.getJSON(pieName2, function(piedata2) {
 				loadComponent(bardata, piedata, piedata2);
 			});
 		});
@@ -27,7 +23,6 @@ function initComponent() {
 function loadComponent(bardata, piedata, piedata2) {
 
 	//准备Bar数据
-
 	var barSeries = [];
 	for (var i = 0; i < bardata.bar.data.sector.length; i++) {
 		var obj = {
@@ -120,7 +115,7 @@ function loadComponent(bardata, piedata, piedata2) {
 
 		var optionPie = {
 			title : {
-				text : piedata.pie.subspecies[0].title,
+				text : piedata2.pie.subspecies[0].title,
 				//subtext : '数据来源：毕鉴昭',
 				x : 'center'
 			},
@@ -133,11 +128,11 @@ function loadComponent(bardata, piedata, piedata2) {
 				x : 'left',
 				data : function() {
 					var list = [];
-					for (var i = 0; i < piedata2.pie.subspecies[0].name.length; i++) {
-						list.push(piedata2.pie.subspecies[0].name[i]);
+					for (var i = 0; i < piedata.pie.subspecies[0].data[0].name.length; i++) {
+						list.push(piedata.pie.subspecies[0].data[0].name[i]);
 					}
-					for (var i = 0; i < piedata.pie.subspecies[0].name.length; i++) {
-						list.push(piedata.pie.subspecies[0].name[i]);
+					for (var i = 0; i < piedata2.pie.subspecies[0].data[0].name.length; i++) {
+						list.push(piedata2.pie.subspecies[0].data[0].name[i]);
 					}
 					return list;
 				}()
@@ -161,7 +156,7 @@ function loadComponent(bardata, piedata, piedata2) {
 			},
 			calculable : false,
 			series : [{
-				name : '分部门贡献',
+				name : '排放贡献',
 				type : 'pie',
 				//selectedMode : 'single',
 				radius : [0, 70],
@@ -169,8 +164,8 @@ function loadComponent(bardata, piedata, piedata2) {
 					normal : {
 						label : {
 							position : 'inner',
-							formatter : function(params) {
-								return params.name + ' (' + (params.percent - 0).toFixed(2) + '%' + ')';
+							formatter : function(param) {
+								return param.name + '\n' + ' (' + (param.percent - 0).toFixed(2) + '%' + ')';
 							}
 						},
 						labelLine : {
@@ -180,17 +175,17 @@ function loadComponent(bardata, piedata, piedata2) {
 				},
 				data : function() {
 					var list = [];
-					for (var i = 0; i < piedata2.pie.subspecies[0].value.length; i++) {
+					for (var i = 0; i < piedata.pie.subspecies[0].data[0].value.length; i++) {
 						var obj = {
-							value : piedata2.pie.subspecies[0].value[i],
-							name : piedata2.pie.subspecies[0].name[i]
+							value : piedata.pie.subspecies[0].data[0].value[i],
+							name : piedata.pie.subspecies[0].data[0].name[i]
 						};
 						list.push(obj);
 					}
 					return list;
 				}()
 			}, {
-				name : '分行业贡献',
+				name : '排放贡献',
 				type : 'pie',
 				radius : [100, 140],
 				//radius : '55%',
@@ -198,18 +193,18 @@ function loadComponent(bardata, piedata, piedata2) {
 				itemStyle : {
 					normal : {
 						label : {
-							formatter : function(params) {
-								return params.name + ' (' + (params.percent - 0).toFixed(2) + '%' + ')';
+							formatter : function(param) {
+								return param.name + '\n' + ' (' + (param.percent - 0).toFixed(2) + '%' + ')';
 							}
 						}
 					}
 				},
 				data : function() {
 					var list = [];
-					for (var i = 0; i < piedata.pie.subspecies[0].value.length; i++) {
+					for (var i = 0; i < piedata2.pie.subspecies[0].data[0].value.length; i++) {
 						var obj = {
-							value : piedata.pie.subspecies[0].value[i],
-							name : piedata.pie.subspecies[0].name[i],
+							value : piedata2.pie.subspecies[0].data[0].value[i],
+							name : piedata2.pie.subspecies[0].data[0].name[i],
 						};
 						list.push(obj);
 					}
@@ -226,34 +221,34 @@ function loadComponent(bardata, piedata, piedata2) {
 			//画物种
 			var newOptionPie = myChartPie.getOption();
 			newOptionPie.series[0].data = [];
-			for (var i = 0; i < piedata2.pie.subspecies[param.dataIndex].value.length; i++) {
+			for (var i = 0; i < piedata.pie.subspecies[param.dataIndex].data[param.seriesIndex].value.length; i++) {
 				var obj = {
-					value : piedata2.pie.subspecies[param.dataIndex].value[i],
-					name : piedata2.pie.subspecies[param.dataIndex].name[i],
+					value : piedata.pie.subspecies[param.dataIndex].data[param.seriesIndex].value[i],
+					name : piedata.pie.subspecies[param.dataIndex].data[param.seriesIndex].name[i],
 				};
 				newOptionPie.series[0].data.push(obj);
 			}
 			newOptionPie.series[1].data = [];
-			for (var i = 0; i < piedata.pie.subspecies[param.dataIndex].value.length; i++) {
+			for (var i = 0; i < piedata2.pie.subspecies[param.dataIndex].data[param.seriesIndex].value.length; i++) {
 				var obj = {
-					value : piedata.pie.subspecies[param.dataIndex].value[i],
-					name : piedata.pie.subspecies[param.dataIndex].name[i],
+					value : piedata2.pie.subspecies[param.dataIndex].data[param.seriesIndex].value[i],
+					name : piedata2.pie.subspecies[param.dataIndex].data[param.seriesIndex].name[i],
 				};
 				newOptionPie.series[1].data.push(obj);
 			}
 
 			//画图例
 			var list = [];
-			for (var i = 0; i < piedata.pie.subspecies[0].name.length; i++) {
-				list.push(piedata.pie.subspecies[0].name[i]);
+			for (var i = 0; i < piedata.pie.subspecies[param.dataIndex].data[param.seriesIndex].name.length; i++) {
+				list.push(piedata.pie.subspecies[param.dataIndex].data[param.seriesIndex].name[i]);
 			}
-			for (var i = 0; i < piedata2.pie.subspecies[0].name.length; i++) {
-				list.push(piedata2.pie.subspecies[0].name[i]);
+			for (var i = 0; i < piedata2.pie.subspecies[param.dataIndex].data[param.seriesIndex].name.length; i++) {
+				list.push(piedata2.pie.subspecies[param.dataIndex].data[param.seriesIndex].name[i]);
 			}
 			newOptionPie.legend.data = list;
 
 			//画title
-			newOptionPie.title.text = piedata.pie.subspecies[param.dataIndex].title;
+			newOptionPie.title.text = piedata2.pie.subspecies[param.dataIndex].title;
 			myChartPie.setOption(newOptionPie, true);
 
 			console.log(param);
