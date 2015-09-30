@@ -22,7 +22,8 @@ $.getJSON('bar.json', function(bardata) {
 					trigger : 'axis',
 					axisPointer : {// 坐标轴指示器，坐标轴触发有效
 						type : 'shadow' // 默认为直线，可选为：'line' | 'shadow'
-					}
+					},
+					formatter : "{a} <br/>{b} : {c} %"
 				},
 				legend : {
 					data : bardata.bar.feature
@@ -124,7 +125,7 @@ $.getJSON('bar.json', function(bardata) {
 						var list = [];
 						for (var i = 0; i < piedata.pie.name.length; i++) {
 							var obj = {
-								'value' : piedata.pie.value[i],
+								'value' : piedata.pie.value[i].toFixed(3),
 								'name' : piedata.pie.name[i]
 							}
 							list.push(obj);
