@@ -10,19 +10,39 @@
 <body>
 	<h2 align="center">排放源贡献</h2>
 	<div align="center">
-		<div id="container" style="width:60%;height:600px;float:left"></div>
-		<div id="container1" style="width:40%;height:300px;float:left"></div>
-		<div id="container2" style="width:40%;height:300px;float:right"></div>
-		<div id="selectdiv" style="width:40%;height:300px;float:right" align="center">
-			<form id="selectform">
-				<select id="sel" name="sel" onchange="initComponent()">
-					<option value="0">行业</option>
-					<option value="1">燃料</option>
-				</select>
-			</form>
+		<div id="container" style="width:80%;height:500px;float:center"></div>
+
+		<div id="main1" style="width:50%;height:500px;float:left">
+			<div id="container1" style="width:50%;height:500px;float:center"></div>
+			<br />
+			<div id="selectdiv1" align="center">
+				<form id="selectform1">
+					<select id="sel1" name="sel1" onchange="initPie1();">
+						<option value="0" selected="true">南京</option>
+						<option value="1">无锡</option>
+						<option value="2">徐州</option>
+					</select>
+				</form>
+			</div>
 		</div>
-	</div>
-	<script>
-		initComponent();
-	</script>
+
+		<div id="main2" style="width:50%;height:500px;float:right">
+			<div id="container2" style="width:50%;height:500px;float:center"></div>
+			<br />
+			<div id="selectdiv2"  align="center">
+				<form id="selectform2">
+					<select id="sel2" name="sel2" onchange="initPie2();">
+						<option value="0" >南京</option>
+						<option value="1" selected="true">无锡</option>
+						<option value="2">徐州</option>
+					</select>
+				</form>
+			</div>
+		</div>
+
+		<script>
+			initComponent();
+			initPie1();
+			initPie2();
+		</script>
 </body>
