@@ -155,8 +155,9 @@ function loadPie(bardata, cityIdx, divName) {
 				formatter : "{a} <br/>{b} : {c} ({d}%)"
 			},
 			legend : {
-				orient : 'vertical',
-				x : 'left',
+				orient : 'horizontal',
+				x : 'center',
+				y : 'bottom',
 				data : bardata.bar.data.sector
 			},
 
@@ -179,7 +180,7 @@ function loadPie(bardata, cityIdx, divName) {
 			series : [{
 				name : '排放贡献',
 				type : 'pie',
-				radius : [0, 120],
+				radius : [0, 150],
 				itemStyle : {
 					normal : {
 						label : {
