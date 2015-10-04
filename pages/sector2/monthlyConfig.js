@@ -4,13 +4,13 @@ function initComponent() {
 	var pieName1 = 'data/newdata/pie.json';
 	var pieName2 = 'data/newdata/subpie.json';
 	/*
-	var state = document.getElementById('sel').value;
-	var pieName2;
-	if (state == 0) {
-		pieName2 = 'data/newdata/subpie.json';
-	} else {
-		pieName2 = 'data/newdata/subpie.json';
-	}*/
+	 var state = document.getElementById('sel').value;
+	 var pieName2;
+	 if (state == 0) {
+	 pieName2 = 'data/newdata/subpie.json';
+	 } else {
+	 pieName2 = 'data/newdata/subpie.json';
+	 }*/
 
 	/*--------- 加载ECharts ---------*/
 	$.getJSON(barName, function(bardata) {
@@ -127,8 +127,9 @@ function loadComponent(bardata, piedata, piedata2) {
 				formatter : "{a} <br/>{b} : {c} ({d}%)"
 			},
 			legend : {
-				orient : 'vertical',
-				x : 'left',
+				orient : 'horizontal',
+				x : 'center',
+				y : 'bottom',
 				data : function() {
 					var list = [];
 					for (var i = 0; i < piedata.pie.subspecies[0].data[0].name.length; i++) {
@@ -159,7 +160,7 @@ function loadComponent(bardata, piedata, piedata2) {
 			series : [{
 				name : '排放贡献',
 				type : 'pie',
-				radius : [0, 90],
+				radius : [0, 70],
 				itemStyle : {
 					normal : {
 						label : {
@@ -207,8 +208,9 @@ function loadComponent(bardata, piedata, piedata2) {
 				formatter : "{a} <br/>{b} : {c} ({d}%)"
 			},
 			legend : {
-				orient : 'vertical',
-				x : 'left',
+				orient : 'horizontal',
+				x : 'center',
+				y : 'bottom',
 				data : function() {
 					var list = [];
 					for (var i = 0; i < piedata2.pie.subspecies[0].data[0][0].name.length; i++) {
@@ -238,7 +240,7 @@ function loadComponent(bardata, piedata, piedata2) {
 			series : [{
 				name : '排放贡献',
 				type : 'pie',
-				radius : [0, 90],
+				radius : [0, 70],
 				//radius : '55%',
 				center : ['50%', '50%'],
 				itemStyle : {
