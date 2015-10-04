@@ -95,6 +95,12 @@ function loadComponent(bardata, piedata, piedata2) {
 			calculable : true,
 			xAxis : [{
 				type : 'category',
+				axisLabel : {
+					interval : 0,
+					textStyle : {
+						fontSize : 10
+					}
+				},
 				data : function() {
 					var list = [];
 					for (var i = 0; i < bardata.bar.data.name.length; i++) {
