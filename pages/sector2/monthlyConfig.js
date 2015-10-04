@@ -37,7 +37,19 @@ function loadComponent(bardata, piedata, piedata2) {
 					barBorderRadius : 0
 				}
 			},
-			data : bardata.bar.data.value[i]
+			data : function() {
+				var list = [];
+				for (var j = 0; j < bardata.bar.data.value[i].length; j++) {
+					if (bardata.bar.data.value[i][j] != '-') {
+						bardata.bar.data.value[i][j] = bardata.bar.data.value[i][j].toFixed(0);
+						//四舍五入到整数位
+						list.push(bardata.bar.data.value[i][j]);
+					} else {
+						list.push(bardata.bar.data.value[i][j]);
+					}
+				}
+				return list;
+			}()
 		};
 		barSeries.push(obj);
 	}
@@ -190,7 +202,14 @@ function loadComponent(bardata, piedata, piedata2) {
 					var list = [];
 					for (var i = 0; i < piedata.pie.subspecies[0].data[0].value.length; i++) {
 						var obj = {
-							value : piedata.pie.subspecies[0].data[0].value[i],
+							value : function() {
+								if (piedata.pie.subspecies[0].data[0].value[i] != '-') {
+									return piedata.pie.subspecies[0].data[0].value[i].toFixed(0);
+									//四舍五入
+								} else {
+									return piedata.pie.subspecies[0].data[0].value[i];
+								}
+							}(),
 							name : piedata.pie.subspecies[0].data[0].name[i]
 						};
 						list.push(obj);
@@ -268,8 +287,15 @@ function loadComponent(bardata, piedata, piedata2) {
 					var list = [];
 					for (var i = 0; i < piedata2.pie.subspecies[0].data[0][0].value.length; i++) {
 						var obj = {
-							value : piedata2.pie.subspecies[0].data[0][0].value[i],
-							name : piedata2.pie.subspecies[0].data[0][0].name[i],
+							value : function() {
+								if (piedata2.pie.subspecies[0].data[0][0].value[i] != '-') {
+									return piedata2.pie.subspecies[0].data[0][0].value[i].toFixed(0);
+									//四舍五入
+								} else {
+									return piedata2.pie.subspecies[0].data[0][0].value[i];
+								}
+							}(),
+							name : piedata2.pie.subspecies[0].data[0][0].name[i]
 						};
 						list.push(obj);
 					}
@@ -291,13 +317,21 @@ function loadComponent(bardata, piedata, piedata2) {
 
 		var ecConfig = require('echarts/config');
 		function eConsole(param) {
+
 			//画物种
 			var newOptionPie = myChartPie.getOption();
 			newOptionPie.series[0].data = [];
 			for (var i = 0; i < piedata.pie.subspecies[param.dataIndex].data[param.seriesIndex].value.length; i++) {
 				var obj = {
-					value : piedata.pie.subspecies[param.dataIndex].data[param.seriesIndex].value[i],
-					name : piedata.pie.subspecies[param.dataIndex].data[param.seriesIndex].name[i],
+					value : function() {
+						if (piedata.pie.subspecies[param.dataIndex].data[param.seriesIndex].value[i] != '-') {
+							return piedata.pie.subspecies[param.dataIndex].data[param.seriesIndex].value[i].toFixed(0);
+							//四舍五入
+						} else {
+							return piedata.pie.subspecies[param.dataIndex].data[param.seriesIndex].value[i];
+						}
+					}(),
+					name : piedata.pie.subspecies[param.dataIndex].data[param.seriesIndex].name[i]
 				};
 				newOptionPie.series[0].data.push(obj);
 			}
@@ -314,14 +348,15 @@ function loadComponent(bardata, piedata, piedata2) {
 			newOptionPie.title.text = piedata.pie.subspecies[param.dataIndex].data[param.seriesIndex].title;
 			myChartPie.setOption(newOptionPie, true);
 
+			//更新全局变量
 			barParamDataIdx = param.dataIndex;
 			barParamSeriesIdx = param.seriesIndex;
 
-			console.log(param);
+			//console.log(param);
 		}
 
 
-		myChartBar.on(ecConfig.EVENT.HOVER, eConsole);
+		myChartBar.on(ecConfig.EVENT.CLICK, eConsole);
 
 		/*---------- pie和pie2联动 ----------*/
 
@@ -331,8 +366,15 @@ function loadComponent(bardata, piedata, piedata2) {
 			newOptionPie2.series[0].data = [];
 			for (var i = 0; i < piedata2.pie.subspecies[barParamDataIdx].data[barParamSeriesIdx][param.dataIndex].value.length; i++) {
 				var obj = {
-					value : piedata2.pie.subspecies[barParamDataIdx].data[barParamSeriesIdx][param.dataIndex].value[i],
-					name : piedata2.pie.subspecies[barParamDataIdx].data[barParamSeriesIdx][param.dataIndex].name[i],
+					value : function() {
+						if (piedata2.pie.subspecies[barParamDataIdx].data[barParamSeriesIdx][param.dataIndex].value[i] != '-') {
+							return piedata2.pie.subspecies[barParamDataIdx].data[barParamSeriesIdx][param.dataIndex].value[i].toFixed(0);
+							//四舍五入
+						} else {
+							return piedata2.pie.subspecies[barParamDataIdx].data[barParamSeriesIdx][param.dataIndex].value[i];
+						}
+					}(),
+					name : piedata2.pie.subspecies[barParamDataIdx].data[barParamSeriesIdx][param.dataIndex].name[i]
 				};
 				newOptionPie2.series[0].data.push(obj);
 			}
@@ -349,7 +391,7 @@ function loadComponent(bardata, piedata, piedata2) {
 			newOptionPie2.title.text = piedata2.pie.subspecies[barParamDataIdx].data[barParamSeriesIdx][param.dataIndex].title;
 			myChartPie2.setOption(newOptionPie2, true);
 
-			console.log(param);
+			//console.log(param);
 		}
 
 
