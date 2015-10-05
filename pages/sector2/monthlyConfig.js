@@ -110,7 +110,7 @@ function loadComponent(bardata, piedata, piedata2) {
 				axisLabel : {
 					interval : 0,
 					textStyle : {
-						fontSize : 10
+						//fontSize : 10 //如果x轴label有重叠，需要调小字号
 					}
 				},
 				data : function() {
