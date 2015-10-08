@@ -18,7 +18,7 @@ function loadEmis(bardata, piedata) {
 
 		var optionBar = {
 			title : {
-				text : bardata.bar.data[0].title,
+				text : bardata.bar.data[4].title, //工业
 				//subtext : '数据来源：毕鉴昭'
 			},
 			tooltip : {
@@ -81,11 +81,11 @@ function loadEmis(bardata, piedata) {
 				itemStyle : {
 					normal : {
 						barBorderRadius : 0,
-						color : colorList[0]
+						color : colorList[4] //工业
 
 					}
 				},
-				data : bardata.bar.data[0].value
+				data : bardata.bar.data[4].value //工业
 			}]
 		};
 
