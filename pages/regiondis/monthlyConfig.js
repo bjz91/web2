@@ -1,9 +1,35 @@
 function initComponent() {
 
-	var fileName = 'data/bar.json';
+	var fileNameBar = 'data/SO2-bar.json';
 
 	/*--------- 加载ECharts ---------*/
-	$.getJSON(fileName, function(bardata) {
+	$.getJSON(fileNameBar, function(bardata) {
+
+		//动态生成下拉采菜单
+		var option1 = document.getElementById('sel1');
+		var option2 = document.getElementById('sel2');
+		for (var i = 0; i < bardata.bar.data.name.length; i++) {
+			if (i === 0) {
+				option1.options[i].value = i;
+				option1.options[i].text = bardata.bar.data.name[i];
+				option2.options[i].value = i;
+				option2.options[i].text = bardata.bar.data.name[i];
+			} else {
+				var objOption1 = document.createElement("OPTION");
+				objOption1.value = i;
+				objOption1.text = bardata.bar.data.name[i];
+				option1.options.add(objOption1);
+				var objOption2 = document.createElement("OPTION");
+				objOption2.value = i;
+				objOption2.text = bardata.bar.data.name[i];
+				option2.options.add(objOption2);
+			}
+		}
+		option1.options[0].selected = true;
+		//默认选中第0个，与html文件里的默认选项对应
+		option2.options[1].selected = true;
+		//默认选中第1个，与html文件里的默认选项对应
+
 		loadComponent(bardata);
 	});
 
@@ -11,26 +37,32 @@ function initComponent() {
 
 function initPie1() {
 
-	var fileName = 'data/bar.json';
+	var fileNameBar = 'data/SO2-bar.json';
+	var fileNamePie = 'data/SO2-pie.json';
 	var cityIdx = document.getElementById('sel1').value;
 	var divName = 'container1';
 
 	/*--------- 加载ECharts ---------*/
-	$.getJSON(fileName, function(bardata) {
-		loadPie(bardata, cityIdx, divName);
+	$.getJSON(fileNameBar, function(bardata) {
+		$.getJSON(fileNamePie, function(piedata) {
+			loadPie(bardata, piedata, cityIdx, divName);
+		});
 	});
 
 }
 
 function initPie2() {
 
-	var fileName = 'data/bar.json';
+	var fileNameBar = 'data/SO2-bar.json';
+	var fileNamePie = 'data/SO2-pie.json';
 	var cityIdx = document.getElementById('sel2').value;
 	var divName = 'container2';
 
 	/*--------- 加载ECharts ---------*/
-	$.getJSON(fileName, function(bardata) {
-		loadPie(bardata, cityIdx, divName);
+	$.getJSON(fileNameBar, function(bardata) {
+		$.getJSON(fileNamePie, function(piedata) {
+			loadPie(bardata, piedata, cityIdx, divName);
+		});
 	});
 
 }
@@ -129,7 +161,7 @@ function loadComponent(bardata) {
 
 }
 
-function loadPie(bardata, cityIdx, divName) {
+function loadPie(bardata, piedata, cityIdx, divName) {
 
 	// 路径配置
 	require.config({
@@ -158,7 +190,16 @@ function loadPie(bardata, cityIdx, divName) {
 				orient : 'horizontal',
 				x : 'center',
 				y : 'bottom',
-				data : bardata.bar.data.sector
+				data : function() {
+					var list = [];
+					for (var i = 0; i < bardata.bar.data.sector.length; i++) {
+						list.push(bardata.bar.data.sector[i]);
+					}
+					for (var j = 0; j < piedata.pie.data[cityIdx].name.length; j++) {
+						list.push(piedata.pie.data[cityIdx].name[j]);
+					}
+					return list;
+				}()
 			},
 
 			toolbox : {
@@ -176,11 +217,40 @@ function loadPie(bardata, cityIdx, divName) {
 					}
 				}
 			},
-			calculable : true,
+			calculable : false,
 			series : [{
 				name : '排放贡献',
 				type : 'pie',
-				radius : [0, 150],
+				radius : [0, 70],
+				itemStyle : {
+					normal : {
+						label : {
+							show : false,
+							position : 'inner',
+							formatter : function(param) {
+								return param.name + '\n' + ' (' + (param.percent - 0).toFixed(2) + '%' + ')';
+							}
+						},
+						labelLine : {
+							show : false
+						}
+					}
+				},
+				data : function() {
+					var list = [];
+					for (var i = 0; i < bardata.bar.data.sector.length; i++) {
+						var obj = {
+							value : bardata.bar.data.value[i][cityIdx].toFixed(3),
+							name : bardata.bar.data.sector[i]
+						};
+						list.push(obj);
+					}
+					return list;
+				}()
+			}, {
+				name : '排放贡献',
+				type : 'pie',
+				radius : [100, 140],
 				itemStyle : {
 					normal : {
 						label : {
@@ -196,11 +266,17 @@ function loadPie(bardata, cityIdx, divName) {
 				},
 				data : function() {
 					var list = [];
-					for (var i = 0; i < bardata.bar.data.sector.length; i++) {
+					for (var i = 0; i < piedata.pie.data[cityIdx].name.length; i++) {
+						var fixedValue;
+						if (piedata.pie.data[cityIdx].value[i] == '-') {
+							fixedValue = piedata.pie.data[cityIdx].value[i];
+						} else {
+							fixedValue = piedata.pie.data[cityIdx].value[i].toFixed(3);
+						}
 						var obj = {
-							value : bardata.bar.data.value[cityIdx][i],
-							name : bardata.bar.data.sector[i]
-						};
+							value : fixedValue,
+							name : piedata.pie.data[cityIdx].name[i]
+						}
 						list.push(obj);
 					}
 					return list;
