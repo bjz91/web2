@@ -1,6 +1,6 @@
 function initComponent() {
 
-	var fileNameBar = 'data/SO2-bar.json';
+	var fileNameBar = 'data/bar.json';
 
 	/*--------- 加载ECharts ---------*/
 	$.getJSON(fileNameBar, function(bardata) {
@@ -37,8 +37,8 @@ function initComponent() {
 
 function initPie1() {
 
-	var fileNameBar = 'data/SO2-bar.json';
-	var fileNamePie = 'data/SO2-pie.json';
+	var fileNameBar = 'data/bar.json';
+	var fileNamePie = 'data/pie.json';
 	var cityIdx = document.getElementById('sel1').value;
 	var divName = 'container1';
 
@@ -53,8 +53,8 @@ function initPie1() {
 
 function initPie2() {
 
-	var fileNameBar = 'data/SO2-bar.json';
-	var fileNamePie = 'data/SO2-pie.json';
+	var fileNameBar = 'data/bar.json';
+	var fileNamePie = 'data/pie.json';
 	var cityIdx = document.getElementById('sel2').value;
 	var divName = 'container2';
 
