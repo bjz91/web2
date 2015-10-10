@@ -82,7 +82,17 @@ function loadComponent(bardata) {
 					barBorderRadius : 0
 				}
 			},
-			data : bardata.bar.data.value[i]
+			data : function() {
+				var list = [];
+				for (var j = 0; j < bardata.bar.data.value[i].length; j++) {
+					if (bardata.bar.data.value[i][j] >= 10) {
+						list.push(bardata.bar.data.value[i][j].toFixed(0));
+					} else {
+						list.push(bardata.bar.data.value[i][j].toFixed(2));
+					}
+				}
+				return list;
+			}()
 		};
 		barSeries.push(obj);
 	}
@@ -139,6 +149,12 @@ function loadComponent(bardata) {
 			calculable : true,
 			xAxis : [{
 				type : 'category',
+				axisLabel : {
+					interval : 0,
+					textStyle : {
+						//fontSize : 10 //如果x轴label有重叠，需要调小字号
+					}
+				},
 				data : function() {
 					var list = [];
 					for (var i = 0; i < bardata.bar.data.name.length; i++) {
@@ -230,9 +246,9 @@ function loadPie(bardata, piedata, cityIdx, divName) {
 							show : true,
 							position : 'inner',
 							formatter : function(param) {
-								if (param.percent > 20) {
+								if (param.percent > 10) {
 									return param.name + '\n' + ' (' + (param.percent - 0).toFixed(2) + '%' + ')';
-								}else{
+								} else {
 									return;
 								}
 							}
