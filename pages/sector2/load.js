@@ -1,4 +1,3 @@
-
 function loadComponent(bardata, piedata, piedata2) {
 
 	//准备Bar数据
@@ -122,6 +121,7 @@ function loadComponent(bardata, piedata, piedata2) {
 				formatter : "{a} <br/>{b} : {c} ({d}%)"
 			},
 			legend : {
+				show : false,
 				orient : 'horizontal',
 				x : 'center',
 				y : 'bottom',
@@ -161,7 +161,11 @@ function loadComponent(bardata, piedata, piedata2) {
 						label : {
 							//position : 'inner',
 							formatter : function(param) {
-								return param.name + '\n' + ' (' + (param.percent - 0).toFixed(2) + '%' + ')';
+								if (param.percent > 0.01) {
+									return param.name + '\n' + ' (' + (param.percent - 0).toFixed(2) + '%' + ')';
+								} else {
+									return;
+								}
 							}
 						},
 						labelLine : {
@@ -210,6 +214,7 @@ function loadComponent(bardata, piedata, piedata2) {
 				formatter : "{a} <br/>{b} : {c} ({d}%)"
 			},
 			legend : {
+				show : false,
 				orient : 'horizontal',
 				x : 'center',
 				y : 'bottom',
@@ -249,7 +254,11 @@ function loadComponent(bardata, piedata, piedata2) {
 					normal : {
 						label : {
 							formatter : function(param) {
-								return param.name + '\n' + ' (' + (param.percent - 0).toFixed(2) + '%' + ')';
+								if (param.percent > 0.01) {
+									return param.name + '\n' + ' (' + (param.percent - 0).toFixed(2) + '%' + ')';
+								} else {
+									return;
+								}
 							}
 						},
 						color : function(params) {
