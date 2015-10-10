@@ -180,24 +180,26 @@ function loadPie(bardata, piedata, cityIdx, divName) {
 			title : {
 				text : bardata.bar.data.name[cityIdx],
 				//subtext : '数据来源：毕鉴昭',
-				x : 'center'
+				x : 'left'
 			},
 			tooltip : {
 				trigger : 'item',
 				formatter : "{a} <br/>{b} : {c} ({d}%)"
 			},
 			legend : {
+				show : false,
 				orient : 'horizontal',
 				x : 'center',
-				y : 'bottom',
+				y : 'top',
 				data : function() {
 					var list = [];
 					for (var i = 0; i < bardata.bar.data.sector.length; i++) {
 						list.push(bardata.bar.data.sector[i]);
 					}
-					for (var j = 0; j < piedata.pie.data[cityIdx].name.length; j++) {
-						list.push(piedata.pie.data[cityIdx].name[j]);
-					}
+					/* 暂时不加外圈的legend
+					 for (var j = 0; j < piedata.pie.data[cityIdx].name.length; j++) {
+					 list.push(piedata.pie.data[cityIdx].name[j]);
+					 }*/
 					return list;
 				}()
 			},
@@ -225,10 +227,14 @@ function loadPie(bardata, piedata, cityIdx, divName) {
 				itemStyle : {
 					normal : {
 						label : {
-							show : false,
+							show : true,
 							position : 'inner',
 							formatter : function(param) {
-								return param.name + '\n' + ' (' + (param.percent - 0).toFixed(2) + '%' + ')';
+								if (param.percent > 20) {
+									return param.name + '\n' + ' (' + (param.percent - 0).toFixed(2) + '%' + ')';
+								}else{
+									return;
+								}
 							}
 						},
 						labelLine : {

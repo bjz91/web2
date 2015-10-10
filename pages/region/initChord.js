@@ -3,6 +3,9 @@ function initChord() {
 	var chordName;
 	var pieName;
 
+	/*--------------------------------------------------------*/
+	/*------------------- 这一块可以写得更简洁 -------------------*/
+	/*--------------------------------------------------------*/
 	if (document.getElementById('sel2').value == 0) {//年均
 		pieName = 'data/PM25_3CatContrib_Conc_HB_2013_annual.json';
 		if (document.getElementById('sel').value == 0) {
@@ -42,6 +45,9 @@ function initChord() {
 			chordName = 'data/PM25_RegContrib_Ratio_HB_2013_winter.json';
 		}
 	}
+	/*------------------------------------------------------------*/
+
+	
 
 	$.getJSON(chordName, function(chorddata) {
 		$.getJSON(pieName, function(piedata) {

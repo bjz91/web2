@@ -1,26 +1,3 @@
-function initComponent() {
-
-	var barName = 'data/newdata/bar.json';
-	var pieName1 = 'data/newdata/pie.json';
-	var pieName2 = 'data/newdata/subpie.json';
-	/*
-	 var state = document.getElementById('sel').value;
-	 var pieName2;
-	 if (state == 0) {
-	 pieName2 = 'data/newdata/subpie.json';
-	 } else {
-	 pieName2 = 'data/newdata/subpie.json';
-	 }*/
-
-	/*--------- 加载ECharts ---------*/
-	$.getJSON(barName, function(bardata) {
-		$.getJSON(pieName1, function(piedata) {
-			$.getJSON(pieName2, function(piedata2) {
-				loadComponent(bardata, piedata, piedata2);
-			});
-		});
-	});
-}
 
 function loadComponent(bardata, piedata, piedata2) {
 
