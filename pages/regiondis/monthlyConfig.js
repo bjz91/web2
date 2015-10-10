@@ -196,7 +196,7 @@ function loadPie(bardata, piedata, cityIdx, divName) {
 			title : {
 				text : bardata.bar.data.name[cityIdx],
 				//subtext : '数据来源：毕鉴昭',
-				x : 'left'
+				x : 'center'
 			},
 			tooltip : {
 				trigger : 'item',
