@@ -18,7 +18,7 @@ function loadComponent(bardata, piedata, piedata2) {
 				var list = [];
 				for (var j = 0; j < bardata.bar.data.value[i].length; j++) {
 					if (bardata.bar.data.value[i][j] != '-') {
-						bardata.bar.data.value[i][j] = bardata.bar.data.value[i][j].toFixed(0);
+						bardata.bar.data.value[i][j] = bardata.bar.data.value[i][j].toFixed(2);
 						//四舍五入到整数位
 						list.push(bardata.bar.data.value[i][j]);
 					} else {
@@ -181,7 +181,7 @@ function loadComponent(bardata, piedata, piedata2) {
 						var obj = {
 							value : function() {
 								if (piedata.pie.subspecies[0].data[0].value[i] != '-') {
-									return piedata.pie.subspecies[0].data[0].value[i].toFixed(0);
+									return piedata.pie.subspecies[0].data[0].value[i].toFixed(2);
 									//四舍五入
 								} else {
 									return piedata.pie.subspecies[0].data[0].value[i];
@@ -266,7 +266,7 @@ function loadComponent(bardata, piedata, piedata2) {
 						var obj = {
 							value : function() {
 								if (piedata2.pie.subspecies[0].data[0][0].value[i] != '-') {
-									return piedata2.pie.subspecies[0].data[0][0].value[i].toFixed(0);
+									return piedata2.pie.subspecies[0].data[0][0].value[i].toFixed(2);
 									//四舍五入
 								} else {
 									return piedata2.pie.subspecies[0].data[0][0].value[i];
@@ -302,7 +302,7 @@ function loadComponent(bardata, piedata, piedata2) {
 				var obj = {
 					value : function() {
 						if (piedata.pie.subspecies[param.dataIndex].data[param.seriesIndex].value[i] != '-') {
-							return piedata.pie.subspecies[param.dataIndex].data[param.seriesIndex].value[i].toFixed(0);
+							return piedata.pie.subspecies[param.dataIndex].data[param.seriesIndex].value[i].toFixed(2);
 							//四舍五入
 						} else {
 							return piedata.pie.subspecies[param.dataIndex].data[param.seriesIndex].value[i];
@@ -345,7 +345,7 @@ function loadComponent(bardata, piedata, piedata2) {
 				var obj = {
 					value : function() {
 						if (piedata2.pie.subspecies[barParamDataIdx].data[barParamSeriesIdx][param.dataIndex].value[i] != '-') {
-							return piedata2.pie.subspecies[barParamDataIdx].data[barParamSeriesIdx][param.dataIndex].value[i].toFixed(0);
+							return piedata2.pie.subspecies[barParamDataIdx].data[barParamSeriesIdx][param.dataIndex].value[i].toFixed(2);
 							//四舍五入
 						} else {
 							return piedata2.pie.subspecies[barParamDataIdx].data[barParamSeriesIdx][param.dataIndex].value[i];
