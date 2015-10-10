@@ -121,10 +121,10 @@ function loadComponent(bardata, piedata, piedata2) {
 				formatter : "{a} <br/>{b} : {c} ({d}%)"
 			},
 			legend : {
-				show : false,
-				orient : 'horizontal',
-				x : 'center',
-				y : 'bottom',
+				show : true,
+				orient : 'vertical',
+				x : 'left',
+				y : 'top',
 				data : function() {
 					var list = [];
 					for (var i = 0; i < piedata.pie.subspecies[0].data[0].name.length; i++) {
@@ -133,7 +133,7 @@ function loadComponent(bardata, piedata, piedata2) {
 						}
 					}
 					return list;
-				}
+				}()
 			},
 
 			toolbox : {
@@ -161,7 +161,7 @@ function loadComponent(bardata, piedata, piedata2) {
 						label : {
 							//position : 'inner',
 							formatter : function(param) {
-								if (param.percent > 0.01) {
+								if (param.percent > 0.1) {
 									return param.name + '\n' + ' (' + (param.percent - 0).toFixed(2) + '%' + ')';
 								} else {
 									return;
@@ -214,10 +214,10 @@ function loadComponent(bardata, piedata, piedata2) {
 				formatter : "{a} <br/>{b} : {c} ({d}%)"
 			},
 			legend : {
-				show : false,
-				orient : 'horizontal',
-				x : 'center',
-				y : 'bottom',
+				show : true,
+				orient : 'vertical',
+				x : 'left',
+				y : 'top',
 				data : function() {
 					var list = [];
 					for (var i = 0; i < piedata2.pie.subspecies[0].data[0][0].name.length; i++) {
@@ -226,7 +226,7 @@ function loadComponent(bardata, piedata, piedata2) {
 						}
 					}
 					return list;
-				}
+				}()
 			},
 			toolbox : {
 				show : true,
@@ -254,7 +254,7 @@ function loadComponent(bardata, piedata, piedata2) {
 					normal : {
 						label : {
 							formatter : function(param) {
-								if (param.percent > 0.01) {
+								if (param.percent > 0.1) {
 									return param.name + '\n' + ' (' + (param.percent - 0).toFixed(2) + '%' + ')';
 								} else {
 									return;
