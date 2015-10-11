@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<head>
+	<meta charset="utf-8">
+	<title>ECharts</title>
+	<script src="../../src/jquery-2.1.4.min.js" type="text/javascript"></script>
+	<!-- ECharts单文件引入 -->
+	<script src="../../src/echarts-2.2.4/build/dist/echarts.js"></script>
+	<script src="initEmis.js"></script>
+	<script src="loadEmis.js"></script>
+</head>
+<body>
+	<h2 align="center">分部门排放贡献</h2>
+	<div id="selectdiv" style="margin:10px" align="left">
+		<form id="selectform">
+			城市：
+			<select id="sel" name="sel" onchange="initEmis()">
+				<option value="0">石家庄市</option>
+				<option value="1">唐山市</option>
+				<option value="2">秦皇岛市</option>
+				<option value="3">邯郸市</option>
+				<option value="4">邢台市</option>
+				<option value="5">保定市</option>
+				<option value="6">张家口市</option>
+				<option value="7">承德市</option>
+				<option value="8">沧州市</option>
+				<option value="9">廊坊市</option>
+				<option value="10">衡水市</option>
+			</select>
+			时间：
+			<select id="sel2" name="sel2" onchange="initEmis()">
+				<option value="0">年均</option>
+				<option value="1">春</option>
+				<option value="2">夏</option>
+				<option value="3">秋</option>
+				<option value="4">冬</option>
+			</select>
+		</form>
+	</div>
+	<div align="center">
+		<div id="container" style="width:40%;height:500px;float:left"></div>
+		<div id="container1" style="width:60%;height:500px;float:left"></div>
+	</div>
+	<script>
+		initEmis();
+	</script>
+</body>
