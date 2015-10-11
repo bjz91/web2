@@ -109,8 +109,9 @@ function loadEmis(bardata, piedata, cityValue) {
 				formatter : "{a} <br/>{b} : {c} ({d}%)"
 			},
 			legend : {
-				orient : 'vertical',
-				x : 'left',
+				orient : 'horizontal',
+				x : 'center',
+				y : 'bottom',
 				data : piedata.pie[cityValue].name
 			},
 			toolbox : {
