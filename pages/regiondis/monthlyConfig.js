@@ -1,6 +1,6 @@
 function initComponent() {
 
-	var fileNameBar = 'data/bar.json';
+	var fileNameBar = 'data/SO2-bar.json';
 
 	/*--------- 加载ECharts ---------*/
 	$.getJSON(fileNameBar, function(bardata) {
@@ -37,15 +37,19 @@ function initComponent() {
 
 function initPie1() {
 
-	var fileNameBar = 'data/bar.json';
-	var fileNamePie = 'data/pie.json';
+	var fileNameBar = 'data/SO2-bar.json';
+	var fileNamePie = 'data/SO2-pie.json';
 	var cityIdx = document.getElementById('sel1').value;
 	var divName = 'container1';
 
 	/*--------- 加载ECharts ---------*/
 	$.getJSON(fileNameBar, function(bardata) {
 		$.getJSON(fileNamePie, function(piedata) {
-			loadPie(bardata, piedata, cityIdx, divName);
+			//合并到其他
+			var comObj = combine(bardata, piedata, 80, cityIdx);
+			var barDataObj = comObj.barDataObj;
+			var pieDataObj = comObj.pieDataObj;
+			loadPie(bardata, piedata, cityIdx, divName, barDataObj, pieDataObj);
 		});
 	});
 
@@ -53,18 +57,95 @@ function initPie1() {
 
 function initPie2() {
 
-	var fileNameBar = 'data/bar.json';
-	var fileNamePie = 'data/pie.json';
+	var fileNameBar = 'data/SO2-bar.json';
+	var fileNamePie = 'data/SO2-pie.json';
 	var cityIdx = document.getElementById('sel2').value;
 	var divName = 'container2';
 
 	/*--------- 加载ECharts ---------*/
 	$.getJSON(fileNameBar, function(bardata) {
 		$.getJSON(fileNamePie, function(piedata) {
-			loadPie(bardata, piedata, cityIdx, divName);
+			//合并到其他
+			var comObj = combine(bardata, piedata, 80, cityIdx);
+			var barDataObj = comObj.barDataObj;
+			var pieDataObj = comObj.pieDataObj;
+			loadPie(bardata, piedata, cityIdx, divName, barDataObj, pieDataObj);
 		});
 	});
 
+}
+
+function combine(bardata, piedata, percent, cityIdx) {
+	//从第几个开始合并
+	var accIdx;
+	for (var i = 0; i < bardata.bar.data.accumulative[cityIdx].length; i++) {
+		if (bardata.bar.data.accumulative[cityIdx][i] > percent) {
+			accIdx = i + 1;
+			break;
+		}
+	}
+
+	//计算bar其他类别的值
+	var otherVaue = 0;
+	for (var i = accIdx; i < bardata.bar.data.accumulative[cityIdx].length; i++) {
+		otherVaue += bardata.bar.data.value[i][cityIdx];
+	}
+
+	//生成bar的data对象
+	var barDataObj = [];
+	var obj;
+	for (var i = 0; i < accIdx; i++) {
+		obj = {
+			value : bardata.bar.data.value[i][cityIdx].toFixed(3),
+			name : bardata.bar.data.sector[i]
+		};
+		barDataObj.push(obj);
+	}
+	obj = {
+		value : otherVaue.toFixed(3),
+		name : "其他"
+	};
+	barDataObj.push(obj);
+
+	////计算pie其他类别的值
+	otherVaue = 0;
+	for (var i = 0; i < piedata.pie.data[cityIdx].name.length; i++) {
+		if (piedata.pie.data[cityIdx].mapping[i] >= accIdx && piedata.pie.data[cityIdx].value[i] != '-') {
+			otherVaue += piedata.pie.data[cityIdx].value[i];
+		}
+	}
+
+	//生成pie的data对象
+	var pieDataObj = [];
+	for (var i = 0; i < piedata.pie.data[cityIdx].name.length; i++) {
+		if (piedata.pie.data[cityIdx].mapping[i] < accIdx) {
+			var fixedValue;
+			if (piedata.pie.data[cityIdx].value[i] == '-') {
+				fixedValue = piedata.pie.data[cityIdx].value[i];
+			} else {
+				fixedValue = piedata.pie.data[cityIdx].value[i].toFixed(3);
+			}
+			obj = {
+				value : fixedValue,
+				name : piedata.pie.data[cityIdx].name[i]
+			}
+			pieDataObj.push(obj);
+		} else {
+			obj = {
+				value : otherVaue.toFixed(3),
+				name : "其他"
+			}
+			pieDataObj.push(obj);
+			break;
+		}
+	}
+
+	var comObj = {
+		barDataObj : barDataObj,
+		pieDataObj : pieDataObj
+	}
+
+	return comObj;
 }
 
 function loadComponent(bardata) {
@@ -177,7 +258,7 @@ function loadComponent(bardata) {
 
 }
 
-function loadPie(bardata, piedata, cityIdx, divName) {
+function loadPie(bardata, piedata, cityIdx, divName, barDataObj, pieDataObj) {
 
 	// 路径配置
 	require.config({
@@ -258,17 +339,7 @@ function loadPie(bardata, piedata, cityIdx, divName) {
 						}
 					}
 				},
-				data : function() {
-					var list = [];
-					for (var i = 0; i < bardata.bar.data.sector.length; i++) {
-						var obj = {
-							value : bardata.bar.data.value[i][cityIdx].toFixed(3),
-							name : bardata.bar.data.sector[i]
-						};
-						list.push(obj);
-					}
-					return list;
-				}()
+				data : barDataObj
 			}, {
 				name : '排放贡献',
 				type : 'pie',
@@ -286,23 +357,7 @@ function loadPie(bardata, piedata, cityIdx, divName) {
 						}
 					}
 				},
-				data : function() {
-					var list = [];
-					for (var i = 0; i < piedata.pie.data[cityIdx].name.length; i++) {
-						var fixedValue;
-						if (piedata.pie.data[cityIdx].value[i] == '-') {
-							fixedValue = piedata.pie.data[cityIdx].value[i];
-						} else {
-							fixedValue = piedata.pie.data[cityIdx].value[i].toFixed(3);
-						}
-						var obj = {
-							value : fixedValue,
-							name : piedata.pie.data[cityIdx].name[i]
-						}
-						list.push(obj);
-					}
-					return list;
-				}()
+				data : pieDataObj
 			}]
 		};
 
