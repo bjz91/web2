@@ -98,13 +98,13 @@ function combine(bardata, piedata, percent, cityIdx) {
 	var obj;
 	for (var i = 0; i < accIdx; i++) {
 		obj = {
-			value : bardata.bar.data.value[i][cityIdx].toFixed(3),
+			value : bardata.bar.data.value[i][cityIdx].toFixed(2),
 			name : bardata.bar.data.sector[i]
 		};
 		barDataObj.push(obj);
 	}
 	obj = {
-		value : otherVaue.toFixed(3),
+		value : otherVaue.toFixed(2),
 		name : "其他"
 	};
 	barDataObj.push(obj);
@@ -125,7 +125,7 @@ function combine(bardata, piedata, percent, cityIdx) {
 			if (piedata.pie.data[cityIdx].value[i] == '-') {
 				fixedValue = piedata.pie.data[cityIdx].value[i];
 			} else {
-				fixedValue = piedata.pie.data[cityIdx].value[i].toFixed(3);
+				fixedValue = piedata.pie.data[cityIdx].value[i].toFixed(2);
 			}
 			obj = {
 				value : fixedValue,
@@ -134,7 +134,7 @@ function combine(bardata, piedata, percent, cityIdx) {
 			pieDataObj.push(obj);
 		} else {
 			obj = {
-				value : otherVaue.toFixed(3),
+				value : otherVaue.toFixed(2),
 				name : "其他"
 			}
 			pieDataObj.push(obj);
