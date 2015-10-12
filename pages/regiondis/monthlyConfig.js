@@ -49,7 +49,8 @@ function initPie1() {
 			var comObj = combine(bardata, piedata, 80, cityIdx);
 			var barDataObj = comObj.barDataObj;
 			var pieDataObj = comObj.pieDataObj;
-			loadPie(bardata, piedata, cityIdx, divName, barDataObj, pieDataObj);
+			var map = comObj.map;
+			loadPie(bardata, piedata, cityIdx, divName, barDataObj, pieDataObj, map);
 		});
 	});
 
@@ -69,7 +70,8 @@ function initPie2() {
 			var comObj = combine(bardata, piedata, 80, cityIdx);
 			var barDataObj = comObj.barDataObj;
 			var pieDataObj = comObj.pieDataObj;
-			loadPie(bardata, piedata, cityIdx, divName, barDataObj, pieDataObj);
+			var map = comObj.map;
+			loadPie(bardata, piedata, cityIdx, divName, barDataObj, pieDataObj, map);
 		});
 	});
 
@@ -140,9 +142,22 @@ function combine(bardata, piedata, percent, cityIdx) {
 		}
 	}
 
+	//计算map
+	var map = [];
+	console.log(piedata.pie.data[cityIdx].mapping.length);
+	for (var i = 0; i < piedata.pie.data[cityIdx].mapping.length; i++) {
+		if (piedata.pie.data[cityIdx].mapping[i] < accIdx) {
+			map.push(piedata.pie.data[cityIdx].mapping[i]);
+		} else {
+			map.push(accIdx);
+			break;
+		}
+	}
+
 	var comObj = {
 		barDataObj : barDataObj,
-		pieDataObj : pieDataObj
+		pieDataObj : pieDataObj,
+		map : map
 	}
 
 	return comObj;
@@ -258,7 +273,7 @@ function loadComponent(bardata) {
 
 }
 
-function loadPie(bardata, piedata, cityIdx, divName, barDataObj, pieDataObj) {
+function loadPie(bardata, piedata, cityIdx, divName, barDataObj, pieDataObj, map) {
 
 	// 路径配置
 	require.config({
@@ -284,19 +299,15 @@ function loadPie(bardata, piedata, cityIdx, divName, barDataObj, pieDataObj) {
 				formatter : "{a} <br/>{b} : {c} ({d}%)"
 			},
 			legend : {
-				show : false,
-				orient : 'horizontal',
-				x : 'center',
+				show : true,
+				orient : 'vertical',
+				x : 'left',
 				y : 'top',
 				data : function() {
 					var list = [];
-					for (var i = 0; i < bardata.bar.data.sector.length; i++) {
-						list.push(bardata.bar.data.sector[i]);
+					for (var i = 0; i < barDataObj.length; i++) {
+						list.push(barDataObj[i].name);
 					}
-					/* 暂时不加外圈的legend
-					 for (var j = 0; j < piedata.pie.data[cityIdx].name.length; j++) {
-					 list.push(piedata.pie.data[cityIdx].name[j]);
-					 }*/
 					return list;
 				}()
 			},
@@ -362,6 +373,38 @@ function loadPie(bardata, piedata, cityIdx, divName, barDataObj, pieDataObj) {
 		};
 
 		myChartPie.setOption(optionPie);
+
+		var ecConfig = require('echarts/config');
+		myChartPie.on(ecConfig.EVENT.LEGEND_SELECTED, function(param) {
+
+			//获取legend选项状态
+			var selected = param.selected;
+			var keys = Object.keys(selected);
+
+			//新的option
+			var newOptionPie = myChartPie.getOption();
+
+			//新的data
+			var newBarDataObj = [];
+			var newPieDataObj = [];
+
+			//刷新data
+			for (var i = 0; i < keys.length; i++) {
+				if (selected[keys[i]] == true) {
+					newBarDataObj.push(barDataObj[i]);
+					for (var j = 0; j < map.length; j++) {
+						if (map[j] === i) {
+							newPieDataObj.push(pieDataObj[j]);
+						}
+					}
+				}
+			}
+			newOptionPie.series[0].data = newBarDataObj;
+			newOptionPie.series[1].data = newPieDataObj;
+
+			myChartPie.setOption(newOptionPie, true);
+
+		});
 
 	});
 
