@@ -365,12 +365,6 @@ function loadPie(bardata, piedata, cityIdx, divName, barDataObj, pieDataObj, map
 						},
 						labelLine : {
 							show : true
-						},
-						color : function(params) {
-							// build a color map as your need.
-							// macarons主题颜色列表
-							var colorList = ['#8d98b3', '#e5cf0d', '#97b552', '#95706d', '#dc69aa', '#07a2a4', '#9a7fd1', '#588dd5', '#f5994e', '#c05050'];
-							return colorList[params.dataIndex]
 						}
 					}
 				},
