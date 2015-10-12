@@ -56,7 +56,7 @@ function loadEmis(bardata, piedata, cityValue) {
 				}
 			},
 			calculable : true,
-			animation : false,
+			//animation : false,
 			xAxis : [{
 				type : 'category',
 				axisLabel : {
@@ -180,7 +180,6 @@ function loadEmis(bardata, piedata, cityValue) {
 				console.log(param);
 			}
 		}
-
 
 		myChartPie.on(ecConfig.EVENT.HOVER, eConsole);
 

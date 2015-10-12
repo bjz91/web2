@@ -63,7 +63,7 @@ function initEmis() {
 			var finalData = [];
 			for (var i = 0; i < sectorLen; i++) {
 				var list = {
-					title : cityName + sectorArr[i] + "部门排放占比",
+					title : "2013年" + cityName + sectorArr[i] + "部门排放占比",
 					value : datalist[i]
 				}
 				finalData.push(list);
