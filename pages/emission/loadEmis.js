@@ -56,6 +56,7 @@ function loadEmis(bardata, piedata, cityValue) {
 				}
 			},
 			calculable : true,
+			animation : false,
 			xAxis : [{
 				type : 'category',
 				axisLabel : {
