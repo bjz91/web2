@@ -1,6 +1,7 @@
 function initComponent() {
 
-	var fileNameBar = 'data/SO2-bar.json';
+	var species = document.getElementById('sel').value;
+	var fileNameBar = 'data/' + species + '-bar.json';
 
 	/*--------- 加载ECharts ---------*/
 	$.getJSON(fileNameBar, function(bardata) {
@@ -37,20 +38,26 @@ function initComponent() {
 
 function initPie1() {
 
-	var fileNameBar = 'data/SO2-bar.json';
-	var fileNamePie = 'data/SO2-pie.json';
+	var species = document.getElementById('sel').value;
+
+	var fileNameBar = 'data/' + species + '-bar.json';
+	var fileNamePie = 'data/' + species + '-pie.json';
+	var fileNameTh = 'data/Threshold.json';
 	var cityIdx = document.getElementById('sel1').value;
 	var divName = 'container1';
 
 	/*--------- 加载ECharts ---------*/
-	$.getJSON(fileNameBar, function(bardata) {
-		$.getJSON(fileNamePie, function(piedata) {
-			//合并到其他
-			var comObj = combine(bardata, piedata, 80, cityIdx);
-			var barDataObj = comObj.barDataObj;
-			var pieDataObj = comObj.pieDataObj;
-			var map = comObj.map;
-			loadPie(bardata, piedata, cityIdx, divName, barDataObj, pieDataObj, map);
+	$.getJSON(fileNameTh, function(th) {
+		$.getJSON(fileNameBar, function(bardata) {
+			$.getJSON(fileNamePie, function(piedata) {
+				//合并到其他
+				var comObj = combine(bardata, piedata, th.threshold[species], cityIdx, true);
+				global_cityIdx = cityIdx;
+				var barDataObj = comObj.barDataObj;
+				var pieDataObj = comObj.pieDataObj;
+				var map = comObj.map;
+				loadPie(bardata, piedata, cityIdx, divName, barDataObj, pieDataObj, map);
+			});
 		});
 	});
 
@@ -58,33 +65,46 @@ function initPie1() {
 
 function initPie2() {
 
-	var fileNameBar = 'data/SO2-bar.json';
-	var fileNamePie = 'data/SO2-pie.json';
+	var species = document.getElementById('sel').value;
+
+	var fileNameBar = 'data/' + species + '-bar.json';
+	var fileNamePie = 'data/' + species + '-pie.json';
+	var fileNameTh = 'data/Threshold.json';
 	var cityIdx = document.getElementById('sel2').value;
 	var divName = 'container2';
 
 	/*--------- 加载ECharts ---------*/
-	$.getJSON(fileNameBar, function(bardata) {
-		$.getJSON(fileNamePie, function(piedata) {
-			//合并到其他
-			var comObj = combine(bardata, piedata, 80, cityIdx);
-			var barDataObj = comObj.barDataObj;
-			var pieDataObj = comObj.pieDataObj;
-			var map = comObj.map;
-			loadPie(bardata, piedata, cityIdx, divName, barDataObj, pieDataObj, map);
+	$.getJSON(fileNameTh, function(th) {
+		$.getJSON(fileNameBar, function(bardata) {
+			$.getJSON(fileNamePie, function(piedata) {
+				//合并到其他
+				var comObj = combine(bardata, piedata, th.threshold[species], cityIdx, false);
+				var barDataObj = comObj.barDataObj;
+				var pieDataObj = comObj.pieDataObj;
+				var map = comObj.map;
+				loadPie(bardata, piedata, cityIdx, divName, barDataObj, pieDataObj, map);
+			});
 		});
 	});
 
 }
 
-function combine(bardata, piedata, percent, cityIdx) {
+//无奈的全局变量
+var glb_accIdx;
+
+function combine(bardata, piedata, percent, cityIdx, isLeft) {
 	//从第几个开始合并
 	var accIdx;
-	for (var i = 0; i < bardata.bar.data.accumulative[cityIdx].length; i++) {
-		if (bardata.bar.data.accumulative[cityIdx][i] > percent) {
-			accIdx = i + 1;
-			break;
+	if (isLeft) {
+		for (var i = 0; i < bardata.bar.data.accumulative[cityIdx].length; i++) {
+			if (bardata.bar.data.accumulative[cityIdx][i] > percent) {
+				accIdx = i + 1;
+				break;
+			}
 		}
+		glb_accIdx = accIdx;
+	} else {
+		accIdx = glb_accIdx;
 	}
 
 	//计算bar其他类别的值
@@ -144,7 +164,6 @@ function combine(bardata, piedata, percent, cityIdx) {
 
 	//计算map
 	var map = [];
-	console.log(piedata.pie.data[cityIdx].mapping.length);
 	for (var i = 0; i < piedata.pie.data[cityIdx].mapping.length; i++) {
 		if (piedata.pie.data[cityIdx].mapping[i] < accIdx) {
 			map.push(piedata.pie.data[cityIdx].mapping[i]);

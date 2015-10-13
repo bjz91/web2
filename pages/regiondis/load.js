@@ -127,7 +127,7 @@ function loadPie(bardata, piedata, cityIdx, divName, barDataObj, pieDataObj, map
 			title : {
 				text : bardata.bar.data.name[cityIdx],
 				//subtext : '数据来源：毕鉴昭',
-				x : 'center'
+				x : 'left'
 			},
 			tooltip : {
 				trigger : 'item',
@@ -136,7 +136,7 @@ function loadPie(bardata, piedata, cityIdx, divName, barDataObj, pieDataObj, map
 			legend : {
 				show : true,
 				orient : 'vertical',
-				x : 'left',
+				x : 'right',
 				y : 'top',
 				data : function() {
 					var list = [];
@@ -146,22 +146,22 @@ function loadPie(bardata, piedata, cityIdx, divName, barDataObj, pieDataObj, map
 					return list;
 				}()
 			},
-
-			toolbox : {
-				show : true,
-				feature : {
-					dataView : {
-						show : true,
-						readOnly : false
-					},
-					restore : {
-						show : true
-					},
-					saveAsImage : {
-						show : true
-					}
-				}
-			},
+			/*
+			 toolbox : {
+			 show : true,
+			 feature : {
+			 dataView : {
+			 show : true,
+			 readOnly : false
+			 },
+			 restore : {
+			 show : true
+			 },
+			 saveAsImage : {
+			 show : true
+			 }
+			 }
+			 },*/
 			calculable : false,
 			series : [{
 				name : '排放贡献',
@@ -173,7 +173,7 @@ function loadPie(bardata, piedata, cityIdx, divName, barDataObj, pieDataObj, map
 							show : true,
 							position : 'inner',
 							formatter : function(param) {
-								if (param.percent > 10) {
+								if (param.percent > 15) {
 									return param.name + '\n' + ' (' + (param.percent - 0).toFixed(2) + '%' + ')';
 								} else {
 									return;
@@ -195,7 +195,11 @@ function loadPie(bardata, piedata, cityIdx, divName, barDataObj, pieDataObj, map
 						label : {
 							//position : 'inner',
 							formatter : function(param) {
-								return param.name + '\n' + ' (' + (param.percent - 0).toFixed(2) + '%' + ')';
+								if (param.percent > 0.1) {
+									return param.name + '\n' + ' (' + (param.percent - 0).toFixed(2) + '%' + ')';
+								} else {
+									return false;
+								}
 							}
 						},
 						labelLine : {

@@ -11,28 +11,49 @@
 <body>
 	<h2 align="center">排放源贡献</h2>
 	<div align="center">
+
 		<div id="container" style="width:80%;height:500px;float:center"></div>
-
-		<div id="main1" style="width:50%;height:500px;float:left">
-			<div id="selectdiv1" align="right">
-				<form id="selectform1">
-					<select id="sel1" name="sel1" onchange="initPie1();">
-						<option value="0">0</option><!--默认选中第0个，与js文件里的默认选项对应-->
-					</select>
-				</form>
-			</div>
-			<div id="container1" style="width:80%;height:500px;float:right"></div>
+		<div id="selectdiv" align="center">
+			<form id="selectform">
+				污染物物种：
+				<select id="sel" name="sel" onchange="initComponent();initPie1();initPie2();">
+					<option value="BC">BC</option>
+					<option value="CO">CO</option>
+					<option value="CO2">CO2</option>
+					<option value="NH3">NH3</option>
+					<option value="NOx">NOx</option>
+					<option value="OC">OC</option>
+					<option value="PM10">PM10</option>
+					<option value="PM25">PM25</option>
+					<option value="SO2">SO2</option>
+					<option value="VOC">VOC</option>
+				</select>
+			</form>
 		</div>
-
-		<div id="main2" style="width:50%;height:500px;float:right">
-			<div id="selectdiv2"  align="left">
-				<form id="selectform2">
-					<select id="sel2" name="sel2" onchange="initPie2();">
-						<option value="1">1</option><!--默认选中第1个，与js文件里的默认选项对应-->
-					</select>
-				</form>
+		<br />
+		<div style="width:80%">
+			<div id="main1" style="width:50%;height:500px;float:left">
+				<div id="selectdiv1" align="center">
+					<form id="selectform1">
+						<select id="sel1" name="sel1" onchange="initPie1();">
+							<option value="0">0</option><!--默认选中第0个，与js文件里的默认选项对应-->
+						</select>
+					</form>
+				</div>
+				<br />
+				<div id="container1" style="width:100%;height:500px;float:center"></div>
 			</div>
-			<div id="container2" style="width:80%;height:500px;float:left"></div>
+			<div id="main2" style="width:50%;height:500px;float:right">
+				<div id="selectdiv2"  align="center">
+					<form id="selectform2">
+						<select id="sel2" name="sel2" onchange="initPie2();">
+							<option value="1">1</option><!--默认选中第1个，与js文件里的默认选项对应-->
+						</select>
+					</form>
+				</div>
+				<br />
+				<div id="container2" style="width:100%;height:500px;float:center"></div>
+			</div>
 		</div>
 
 		<script>

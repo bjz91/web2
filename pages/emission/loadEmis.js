@@ -89,7 +89,13 @@ function loadEmis(bardata, piedata, cityValue) {
 
 					}
 				},
-				data : bardata.bar.data[4].value //工业
+				data : function() {//工业
+					var list = [];
+					for (var i = 0; i < bardata.bar.data[4].value.length; i++) {
+						list.push(bardata.bar.data[4].value[i].toFixed(2));
+					}
+					return list;
+				}()
 			}]
 		};
 
@@ -172,7 +178,10 @@ function loadEmis(bardata, piedata, cityValue) {
 			if (param.dataIndex != last) {
 				//画物种
 				var newOptionBar = myChartBar.getOption();
-				newOptionBar.series[0].data = bardata.bar.data[param.dataIndex].value;
+				newOptionBar.series[0].data = [];
+				for (var i = 0; i < bardata.bar.data[param.dataIndex].value.length; i++) {
+					newOptionBar.series[0].data.push(bardata.bar.data[param.dataIndex].value[i].toFixed(2));
+				}
 				newOptionBar.title.text = bardata.bar.data[param.dataIndex].title;
 				//改变bar颜色
 				newOptionBar.series[0].itemStyle.normal.color = colorList[param.dataIndex];
@@ -180,6 +189,7 @@ function loadEmis(bardata, piedata, cityValue) {
 				console.log(param);
 			}
 		}
+
 
 		myChartPie.on(ecConfig.EVENT.HOVER, eConsole);
 
