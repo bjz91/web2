@@ -7,6 +7,9 @@ function initComponent() {
 	$.getJSON(fileNameBar, function(bardata) {
 
 		//动态生成下拉采菜单
+		//清空下拉菜单，保留第一个
+		document.getElementById('sel1').length = 1;
+		document.getElementById('sel2').length = 1;
 		var option1 = document.getElementById('sel1');
 		var option2 = document.getElementById('sel2');
 		for (var i = 0; i < bardata.bar.data.name.length; i++) {
