@@ -195,15 +195,20 @@ function loadPie(bardata, piedata, cityIdx, divName, barDataObj, pieDataObj, map
 						label : {
 							//position : 'inner',
 							formatter : function(param) {
-								if (param.percent > 0.1) {
+								if (param.percent > 3) {
 									return param.name + '\n' + ' (' + (param.percent - 0).toFixed(2) + '%' + ')';
 								} else {
 									return false;
 								}
+							},
+							textStyle : {
+								align : 'center',
+								baseline : 'top'
 							}
 						},
 						labelLine : {
-							show : true
+							show : false,
+							length : 20
 						}
 					}
 				},
